@@ -20,15 +20,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-
-    
-    final socketService = Provider.of<SocketService>(context, listen: false);
-
-    socketService.socket.on('active-bands', _handleActiveBands );
     super.initState();
+    final socketService = Provider.of<SocketService>(context, listen: false);
+    socketService.socket.on('active-bands', _handleActiveBands );
   }
 
-  _handleActiveBands( dynamic payload ) {
+  _handleActiveBands( dynamic payload ) async {
 
     this.bands = (payload as List)
         .map( (band) => Band.fromMap(band) )
@@ -49,6 +46,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
     final socketService = Provider.of<SocketService>(context);
+
+    Future createTask() async {
+      
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -183,17 +184,14 @@ class _HomePageState extends State<HomePage> {
   Widget _showGraph() {
 
     Map<String, double> dataMap = new Map();
-    dataMap.putIfAbsent('Flutter', () => 5);
+    //dataMap.putIfAbsent('Flutter', () => 5);
 
     //
     bands.forEach((band) {
-      dataMap.putIfAbsent( band.name, () => band.votes!.toDouble() );
+      dataMap.putIfAbsent( band.name, () => band.votes.toDouble() );
     });
 
-    if(dataMap==null){
-      
-    }
-
+   
     final List<Color> colorList = [
       Colors.blue[50]!,
       Colors.blue[200]!,
@@ -202,6 +200,8 @@ class _HomePageState extends State<HomePage> {
       Colors.yellow[50]!,
       Colors.yellow[200]!,
     ];
+
+    if(dataMap.isEmpty) return Container();
 
     return Container(
       padding: EdgeInsets.only(top: 10),

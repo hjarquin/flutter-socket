@@ -5,7 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:band_names/pages/home.dart';
 import 'package:band_names/pages/status.dart';
  
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+} 
  
 class MyApp extends StatelessWidget {
   @override

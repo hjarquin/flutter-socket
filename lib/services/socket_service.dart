@@ -28,7 +28,8 @@ class SocketService with ChangeNotifier {
     print('Socket Service Init');
     _socket.onConnect((_) {
        _serverStatus = ServerStatus.Online;
-      print('connect');
+       
+      print('$_socket.id');
       notifyListeners();
     });
 
